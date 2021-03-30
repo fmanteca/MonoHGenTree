@@ -75,7 +75,6 @@ public:
   TTree* tree_;
 
   float HiggsPt;
-  float trueMET;
   float HiggsEta;
    private:
       virtual void beginJob() override;
@@ -141,70 +140,32 @@ MonoHGenTree2DScans::analyze(const edm::Event& iEvent, const edm::EventSetup& iS
    //auto Higgs=0;
    //auto vV=0;
    TLorentzVector Higgs;
-   TLorentzVector vV;
-   
-   bool found_higgs = false;
-   bool found_a0 = false;
    
    std::vector<const reco::Candidate*> cands;
    std::vector<std::vector<reco::GenParticle>::const_iterator> myParticles;
-   int idm = 0;
 
    HiggsPt = -99.;
-   trueMET = -99.;
    HiggsEta = -99.; 
    for( std::vector<reco::GenParticle>::const_iterator it_gen = genParticleHandle->begin(); it_gen != genParticleHandle->end(); it_gen++ )    {
      reco::GenParticle gen = *it_gen;
      
      //  std::cout<<" px = "<<gen.px()<<std::endl;
-     if ( found_higgs && found_a0)    break;
-     if (abs(gen.pdgId())==25){
-       if (!found_higgs){
-	 Higgs.SetPxPyPzE(gen.px(), gen.py(), gen.pz(), gen.energy());
-	 found_higgs = true;
+     if (abs(gen.pdgId())==54){
+       Higgs.SetPxPyPzE(gen.px(), gen.py(), gen.pz(), gen.energy());
        }
      }
      
-     if (abs(gen.pdgId())==18){
-       if (!found_a0){
-	 if (idm < 3){
-	   TLorentzVector tmp_;
-	   tmp_.SetPxPyPzE(gen.px(), gen.py(), gen.pz(), gen.energy());
-	   vV += tmp_;
-	   //vV.SetPxPyPzE(gen.px(), gen.py(), gen.pz(), gen.energy());
-	   std::cout<<" inside dm"<<gen.pt()
-	   <<" " <<gen.status()<<std::endl;
-	 }
-	 idm++;
-       }
-       if (idm == 2) found_a0 = true;
-       /*
-	 else{
-	 TLorentzVector tmp_;
-	 tmp_.SetPxPyPzE(gen.px(), gen.py(), gen.pz(), gen.energy());
-	 vV += tmp_;
-	 found_a0 = true;
-       }
-       */
-     }
-   }
    
    HiggsPt = Higgs.Pt();
-   trueMET = vV.Pt();
    HiggsEta = Higgs.Eta();
    
      
-   
-   
-   std::cout<<" Higgs pT = "<<Higgs.Pt()
-	    <<" Ao pT = "<<vV.Pt()
-	    <<std::endl;
-   
-   edm::Handle<LHEEventProduct> evt;
-   if(iEvent.getByToken( lheEventToken, evt )){
-     float sysLHEweight = evt->weights()[0].wgt/evt->weights()[0].wgt; 
-     std::cout<< " sysLHEweight = "<<sysLHEweight<<std::endl;
-   }
+   //   std::cout<< "Higgs_pt: " << HiggsPt <<std::endl; 
+   // edm::Handle<LHEEventProduct> evt;
+   // if(iEvent.getByToken( lheEventToken, evt )){
+   //   float sysLHEweight = evt->weights()[0].wgt/evt->weights()[0].wgt; 
+   //   std::cout<< " sysLHEweight = "<<sysLHEweight<<std::endl;
+   // }
    
    tree_->Fill();
 
@@ -220,7 +181,6 @@ MonoHGenTree2DScans::beginJob()
   //tree = new TTree("T","Signal Region");
   tree_->Branch("HiggsPt",&HiggsPt, "HiggsPt/f");
   tree_->Branch("HiggsEta",&HiggsEta, "HiggsEta/f");
-  tree_->Branch("trueMET",&trueMET, "trueMET/f");
 }
 
 // ------------ method called once each job just after ending the event loop  ------------

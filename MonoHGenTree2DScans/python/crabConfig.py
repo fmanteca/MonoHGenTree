@@ -29,14 +29,14 @@ config.Data.splitting = 'FileBased'
 config.Data.inputDBS = 'phys03'
 
 ## Note, the number of events here need to match the variable NEventsPerJob in stepLHE.py
-config.Data.unitsPerJob = 30000
+config.Data.unitsPerJob = 10000
 NJOBS = 1
 config.Data.totalUnits = config.Data.unitsPerJob * NJOBS
 config.Data.publication = True
 config.Data.outputDatasetTag  = 'GEN'
-config.Data.outLFNDirBase = '/store/user/khurana/MonoH2DScanTrees/'
+config.Data.outLFNDirBase = '/store/user/fernanpe/MonoH2DScanTrees/'
 
 
 config.section_("Site")
-config.Site.storageSite = "T2_US_Wisconsin"
-config.Site.whitelist = ['T2_CH_CERN', 'T2_IT_Pisa', 'T2_RU_JINR', 'T2_DE_RWTH', 'T2_US_Wisconsin']
+config.Site.storageSite = "T2_ES_IFCA"
+#config.Site.whitelist = ['T2_CH_CERN', 'T2_IT_Pisa', 'T2_RU_JINR', 'T2_DE_RWTH', 'T2_US_Wisconsin']
