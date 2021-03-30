@@ -1,0 +1,1 @@
+GENERATE GEN-SIM SAMPLES USING SLC7: https://exo-mc-and-i.gitbook.io/exo-mc-and-interpretation/how-to-sample-production-private
